@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>忍者の陰に潜む光と影</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: #1a1a2e;
+      --text-primary: #e0ddd5;
+      --text-secondary: #8a8a9a;
+      --accent: #4a9eff;
+      --accent-dim: #2a5a9a;
+      --gold: #c4a35a;
+      --chapter-border: #2a2a3e;
+      --serif: 'Noto Serif JP', 'Hiragino Mincho ProN', serif;
+      --sans: 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--serif);
+      font-size: 17px;
+      line-height: 1.95;
+      min-height: 100vh;
+    }
+
+    /* ─── Header ─── */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 100px 20px 80px;
+      background: linear-gradient(180deg, #1a2a4a 0%, #0f1a2f 100%);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 30%, rgba(120,180,255,0.15) 0%, transparent 70%);
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #ffffff;
+      text-shadow: 0 2px 20px rgba(100,160,255,0.3);
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .hero-sub {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      color: #b0c4de;
+      letter-spacing: 0.15em;
+    }
+    .hero-line {
+      width: 60px; height: 1px;
+      background: var(--gold);
+      margin: 28px auto 0;
+    }
+
+    /* ─── Digest Carousel ─── */
+    .carousel-wrap {
+      background: linear-gradient(180deg, #0f1a2f 0%, #0a0e18 100%);
+      padding: 24px 0 20px;
+      overflow: hidden;
+    }
+    .carousel-track {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 calc((100vw - min(85vw, 600px)) / 2);
+      scrollbar-width: none;
+    }
+    .carousel-track::-webkit-scrollbar { display: none; }
+    .carousel-slide {
+      flex: 0 0 min(85vw, 280px);
+      scroll-snap-align: center;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      transition: transform 0.2s;
+      aspect-ratio: 3/2;
+    }
+    .carousel-slide:active { transform: scale(0.97); }
+    .carousel-slide img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .carousel-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      padding: 28px 12px 10px;
+      color: #fff;
+      font-size: 0.85rem;
+      font-family: var(--serif);
+      line-height: 1.4;
+    }
+    .carousel-ch {
+      display: inline-block;
+      font-size: 0.7rem;
+      color: var(--gold);
+      margin-right: 6px;
+      font-family: var(--sans);
+      letter-spacing: 0.06em;
+    }
+    .carousel-dots {
+      text-align: center;
+      padding-top: 12px;
+    }
+    .carousel-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      margin: 0 4px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .carousel-dot.active {
+      background: var(--gold);
+      transform: scale(1.3);
+    }
+    @media (min-width: 600px) {
+      .carousel-slide { flex: 0 0 280px; }
+      .carousel-track { padding: 0 calc((100vw - 900px) / 2); gap: 18px; }
+    }
+
+    /* ─── Navigation ─── */
+    .nav-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,15,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--chapter-border);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      overflow-x: auto;
+      font-family: var(--sans);
+      font-size: 0.8rem;
+    }
+    .nav-bar .nav-title {
+      color: var(--gold);
+      font-weight: 700;
+      white-space: nowrap;
+      margin-right: 8px;
+    }
+    .nav-bar a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      white-space: nowrap;
+      padding: 4px 10px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .nav-bar a:hover {
+      color: var(--accent);
+      background: rgba(74,158,255,0.1);
+    }
+
+    /* ─── TOC ─── */
+    .toc {
+      max-width: 700px;
+      margin: 60px auto 40px;
+      padding: 0 20px;
+    }
+    .toc h3 {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .toc-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 18px;
+      color: var(--text-primary);
+      text-decoration: none;
+      border-left: 2px solid var(--chapter-border);
+      transition: all 0.25s;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+    }
+    .toc-item:hover {
+      border-color: var(--accent);
+      background: rgba(74,158,255,0.04);
+      padding-left: 24px;
+    }
+    .toc-num {
+      font-size: 0.75rem;
+      color: var(--accent-dim);
+      font-weight: 700;
+      min-width: 20px;
+    }
+
+    /* ─── Characters ─── */
+    .characters {
+      max-width: 700px;
+      margin: 40px auto 60px;
+      padding: 0 20px;
+    }
+    .characters h3 {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+    .char-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .char-card {
+      background: var(--bg-card);
+      border: 1px solid var(--chapter-border);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .char-name {
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .char-meta {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .char-meta span {
+      background: rgba(74,158,255,0.1);
+      padding: 1px 8px;
+      border-radius: 4px;
+    }
+    .char-appearance {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 6px;
+      border-left: 2px solid var(--chapter-border);
+      padding-left: 10px;
+    }
+    .char-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ─── Divider ─── */
+    .section-divider {
+      width: 40px; height: 1px;
+      background: var(--chapter-border);
+      margin: 0 auto;
+    }
+
+    /* ─── Chapter ─── */
+    .chapter {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 80px 20px;
+      border-top: 1px solid var(--chapter-border);
+    }
+    .chapter-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .chapter-number {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      color: var(--accent-dim);
+      display: block;
+      margin-bottom: 8px;
+    }
+    .chapter-title {
+      font-family: var(--serif);
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .chapter-image {
+      margin: 0 -20px 40px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--chapter-border);
+    }
+    .chapter-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      opacity: 0.92;
+    }
+    .chapter-body p {
+      margin-bottom: 1.2em;
+      text-indent: 1em;
+      text-align: justify;
+    }
+    .chapter-body p:empty {
+      display: none;
+    }
+
+    /* ─── Footer ─── */
+    .footer {
+      text-align: center;
+      padding: 60px 20px;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--chapter-border);
+    }
+
+    /* ─── Reading mode toggle ─── */
+    .mode-toggle {
+      position: fixed; bottom: 20px; right: 20px; z-index: 200;
+      background: var(--bg-card);
+      border: 1px solid var(--chapter-border);
+      color: var(--text-secondary);
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mode-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+
+    /* --- TTS Read Aloud --- */
+    .tts-fab {
+      position: fixed; bottom: 80px; right: 20px; z-index: 200;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--accent); color: #fff; border: none;
+      font-size: 22px; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      transition: all 0.3s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tts-fab:hover { transform: scale(1.1); }
+    .tts-fab.speaking { background: #e74c3c; animation: tts-pulse 1.5s infinite; }
+    @keyframes tts-pulse {
+      0%,100% { box-shadow: 0 4px 16px rgba(231,76,60,0.4); }
+      50% { box-shadow: 0 4px 24px rgba(231,76,60,0.7); }
+    }
+    .tts-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      background: rgba(20,20,30,0.95); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--chapter-border);
+      padding: 10px 16px; display: none;
+      align-items: center; gap: 10px;
+      font-family: var(--sans); font-size: 0.85rem;
+    }
+    .tts-bar.active { display: flex; flex-wrap: wrap; }
+    .tts-bar button {
+      background: none; border: 1px solid var(--text-secondary);
+      color: var(--text-primary); border-radius: 6px;
+      padding: 6px 12px; cursor: pointer; font-size: 0.8rem;
+      white-space: nowrap; transition: all 0.2s;
+    }
+    .tts-bar button:hover { border-color: var(--accent); color: var(--accent); }
+    .tts-bar .tts-info {
+      flex: 1; color: var(--text-secondary);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      min-width: 80px;
+    }
+    .tts-bar .tts-speed {
+      display: flex; align-items: center; gap: 4px;
+      color: var(--text-secondary); font-size: 0.75rem;
+    }
+    .tts-bar .tts-speed input { width: 60px; accent-color: var(--accent); }
+    body.light .tts-bar {
+      background: rgba(245,245,240,0.95); border-top-color: #ddd;
+    }
+    body.light .tts-bar button { border-color: #999; color: #333; }
+    body.light .tts-bar .tts-info { color: #666; }
+
+    /* ─── Light mode ─── */
+    body.light {
+      --bg-primary: #f5f0e8;
+      --bg-secondary: #ebe5d9;
+      --bg-card: #fff;
+      --text-primary: #2a2a2a;
+      --text-secondary: #6a6a6a;
+      --chapter-border: #d5cfc3;
+      --accent: #2563eb;
+      --accent-dim: #6b9eff;
+      --gold: #8a6d2b;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 600px) {
+      body { font-size: 15px; }
+      .chapter { padding: 50px 16px; }
+    }
+
+    /* ─── Scroll progress ─── */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; z-index: 200;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      width: 0%;
+      transition: width 0.1s;
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress" id="progress"></div>
+
+  <header class="hero">
+    <h1 class="hero-title">忍者の陰に潜む光と影</h1>
+    <p class="hero-sub">GENERATED WITH LOCAL AI — OLLAMA + STABLE DIFFUSION</p>
+    <div class="hero-line"></div>
+  </header>
+
+  <nav class="nav-bar">
+    <span class="nav-title">目次</span>
+    <a href="#chapter-1">第1章</a><a href="#chapter-2">第2章</a><a href="#chapter-3">第3章</a><a href="#chapter-4">第4章</a><a href="#chapter-5">第5章</a><a href="#chapter-6">第6章</a><a href="#chapter-7">第7章</a><a href="#chapter-8">第8章</a><a href="#chapter-9">第9章</a><a href="#chapter-10">第10章</a>
+  </nav>
+
+  <div class="toc">
+    <h3>— 目次 —</h3>
+        <a href="#chapter-1" class="toc-item"><span class="toc-num">1</span><span class="toc-label">忍びの秘密を知る日</span></a>
+        <a href="#chapter-2" class="toc-item"><span class="toc-num">2</span><span class="toc-label">初陣</span></a>
+        <a href="#chapter-3" class="toc-item"><span class="toc-num">3</span><span class="toc-label">忍びの絆</span></a>
+        <a href="#chapter-4" class="toc-item"><span class="toc-num">4</span><span class="toc-label">裏切り者の影</span></a>
+        <a href="#chapter-5" class="toc-item"><span class="toc-num">5</span><span class="toc-label">秘密の伝説</span></a>
+        <a href="#chapter-6" class="toc-item"><span class="toc-num">6</span><span class="toc-label">忍びの道の真髄</span></a>
+        <a href="#chapter-7" class="toc-item"><span class="toc-num">7</span><span class="toc-label">光と影の間で</span></a>
+        <a href="#chapter-8" class="toc-item"><span class="toc-num">8</span><span class="toc-label">反逆者との対決</span></a>
+        <a href="#chapter-9" class="toc-item"><span class="toc-num">9</span><span class="toc-label">新たな世界への扉</span></a>
+        <a href="#chapter-10" class="toc-item"><span class="toc-num">10</span><span class="toc-label">未来への希望</span></a>
+  </div>
+
+  <div class="characters">
+    <h3>— 登場人物 —</h3>
+    <div class="char-grid">
+      <div class="char-card">
+        <div class="char-name">風見草</div>
+        <div class="char-meta"><span>主人公</span><span>23歳</span></div>
+        <div class="char-appearance">身長170cm、細身だが引き締まった体型。茶色の髪を短く切り揃え、目は青灰色である。</div>
+        <div class="char-desc">忍びの中に隠れた人情派。忠誠心が強く、同時に信念を持ちつつ柔軟性がある</div>
+      </div>
+      <div class="char-card">
+        <div class="char-name">竜崎薫</div>
+        <div class="char-meta"><span>サブキャラ</span><span>35歳</span></div>
+        <div class="char-appearance">身長180cm、筋肉質の体格。黒髪を肩まで伸ばし、目は鋭い茶色をしている。</div>
+        <div class="char-desc">実力主義者で、常に冷静さを保つ。しかし人間味もあり、風見草に特別な信頼を持つ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <main>
+
+    <section class="chapter" id="chapter-1">
+      <div class="chapter-header">
+        <span class="chapter-number">第1章</span>
+        <h2 class="chapter-title">忍びの秘密を知る日</h2>
+      </div>
+      
+      <div class="chapter-body">
+        <p>第1章　忍びの秘密を知る日</p>
+
+        <p>夜露が落ちた森。葉っぱに付着した水滴が月光で銀色になる。遠くから聞こえる川面の流れ音、近くでは風鈴が微かに鳴っていた。</p>
+
+        <p>「父さん」</p>
+        <p>背後からの声に、風見草は驚きを顔に出さなかった。手元を見れば、父親と呼ばれた男の姿があった。「大丈夫ですか」</p>
+
+        <p>「少し疲れたな」その横で、竜崎薫が肩越しに見てくる。</p>
+        <p>「忍びの訓練には慣れるまで時間がかかるんだよ」と彼は微笑んだ。</p>
+
+        <p>夜露を踏んで進む足音。森の中は深い闇と静寂の中で生きているかのように感じる。「風見草」</p>
+        <p>「ここから先、暗号や罠について教える」</p>
+
+        <p>地面に手を滑らせると温かな土の感触が指先を通じて伝わる。月光よりも背後からの灯りの方が彼らの足元を照らす。</p>
+        <p>薫は杖を突きつつ、道程を見ながら前に進む。「歩みが遅いな」</p>
+        <p>「忍びには速さだけじゃない。目利きや勘が必要なんだ」</p>
+
+        <p>父と竜崎の間から見える木々は薄暗く影に飲み込まれていた。彼らの息遣いや音が周囲を支配する。</p>
+        <p>突然、風見草を押し出すような一撃が横殴りにかかってきた。「避けろ！」</p>
+        <p>しかし彼女の動きは既に訓練通りだった。</p>
+
+        <p>「それじゃあダメだ」竜崎薫の声。その言葉には怒気が含まれていた。</p>
+        <p>また一撃、そして次々と繰り出される攻撃は風見草を追い詰めようとする。「もう一つ」</p>
+
+        <p>彼女は息を止めて次の手を考える。「ここから先」</p>
+        <p>「忍びとは影に溶け込むこと。光の下には存在しないんだよ」</p>
+
+        <p>父親が握った刀を見た瞬間、その鋭さと冷たい質感が肌で感じられた。</p>
+        <p>闇の中で聞こえる彼の声は静寂を裂く刃のような響きを持っていた。</p>
+
+        <p>竜崎薫の一撃を受け止める動作は滑らかで正確だった。「よくやった」</p>
+
+        <p>月光が薄暗い森の中から覗いていた。背後では父親と竜崎薫の話声だけが聞こえてくる。</p>
+        <p>静寂の中で彼女は深呼吸した。その息遣いが周りを包み込むように感じられた。</p>
+
+        <p>「忍びとは」と、遠くで風に流されるような音と共に、「人間離れしたもの」</p>
+        <p>「影と光の隙間に生きる者が通じ合う特別な世界」</p>
+
+        <p>周囲から聞こえる僅かな物音。それは夜露が葉を打つ静寂の中で最も強い響きを持っていた。</p>
+        <p>月光、川面の流れ音、風鈴の微かに鳴り続けるその先で、「忍び」という言葉は深淵へと続く道標となった。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-2">
+      <div class="chapter-header">
+        <span class="chapter-number">第2章</span>
+        <h2 class="chapter-title">初陣</h2>
+      </div>
+      
+      <div class="chapter-body">
+        <p>月光が薄暗い森の地面に幾何学模様を描き、木々の影が揺れる。風見草の足音は静かで、夜露に濡れた葉っぱが彼女の靴底にはりついても気づかないほどだった。その先にあるのは敵対する村。</p>
+
+        <p>「竜崎さんからの指示通りだ」</p>
+        <p>小声での確認を終え、風見草は息を殺し、黒い服と影の色合いに溶け込むように身を潜める。</p>
+        <p>遠くで聞こえる犬の唸り。不意に風が吹き抜けていく。木々から漏れる月光が風に乗って揺らめく。</p>
+
+        <p>村のはずれにある小さな茶屋。そこは忍びにとって秘密の伝令所であると同時に、情報集約地でもある。</p>
+        <p>彼女は壁際の影に身を隠し、息づまりながら窓ガラス越しに室内を見張る。</p>
+
+        <p>濃い夜明けが近づく。屋敷の主たちはまだ眠っているように見える。</p>
+        <p>風見草はゆっくりと手探りで鍵を開けて扉をあける音だけ漏らさぬよう静かに入ると、部屋の中にある書類を一枚ずつ丁寧に捲る。</p>
+
+        <p>「情報収集が完了」</p>
+        <p>盗み出した紙片を胸ポケットに入れ直し、彼女は再び出口に向かい、壁際の陰から足元を見張りながら歩む。</p>
+        <p>月光と暗闇の狭間で息苦しさを感じた。視界はほとんどない。</p>
+
+        <p>しかし突然、背後からの気配が風見草を緊迫させる。</p>
+        <p>「誰だ？」</p>
+        <p>彼女は一瞬身構えつつも首だけゆっくりと横に向ける。そこには竜崎薫が立っていた。「大丈夫か」その声から安心感を得て、風見草の心拍数は徐々に落ち着いていく。</p>
+
+        <p>彼女の足元で月光が微かに揺れ動き、それは遠くへ去る影と共に、次なる夜への予兆となる。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-3">
+      <div class="chapter-header">
+        <span class="chapter-number">第3章</span>
+        <h2 class="chapter-title">忍びの絆</h2>
+      </div>
+      
+      <div class="chapter-body">
+        <p>第3章　忍びの絆</p>
+
+        <p>朝露がまだ地に絡みつく中、風見草たちは山の中腹で待ち合わせていた。薄い霧が木々から立ち上り、微かに土と木の香りを運んでくる。</p>
+
+        <p>「風見草、無事だな」</p>
+        <p>竜崎薫は静かな声で尋ねる。</p>
+        <p>「ええ、大丈夫です」</p>
+
+        <p>彼らを取り囲む山肌には緑がまだら模様を作っていた。背後からは薄明かりの空へと続く一本道だけが見える。</p>
+
+        <p>風見草たちは新たな任務を受け取るために集まっている。</p>
+        <p>薫は一言を漏らし、「準備はできてるか？」</p>
+        <p>「ええ、全て手配しました」</p>
+        <p>報告する声には力強さがあった。</p>
+
+        <p>昼間の陽射しが木々に揺れ落ちる。虫たちが鳴き始めていた。彼らの背後では風切り音と共に別の忍びが到着した。</p>
+        <p>「任務は複雑だな」</p>
+
+        <p>その男、田所一郎は力強い顔つきをしている。彼からするどい視線を向けられると、自然と身構える。</p>
+
+        <p>薫は厳かな表情で語り出す。「情報の収集と伝令を行う。この二人が我々にとって欠かせない存在だ」</p>
+
+        <p>風見草と一郎は互いに頷き合った。</p>
+        <p>「俺たちはいつでも動ける」</p>
+        <p>一郎の声には自信があった。</p>
+
+        <p>昼下がり、山小屋では彼らの作戦会議が始まった。手紙を広げて読む薫の顔つきは険しかった。「敵の動きを見誤ると壊滅的だ」</p>
+
+        <p>風見草は黙って立ち上がり、「私なら大丈夫です」静かな声で告げる。</p>
+        <p>「君らしくないな、自信過剰だろうか？」</p>
+        <p>一郎が口を挟む。</p>
+
+        <p>薫は二人に視線を向け、「それは違う。彼女はただ冷静だ」</p>
+
+        <p>風見草の顔には決意の色があった。「忠誠心と信念を持ちつつも柔軟に対応します」</p>
+        <p>「それが彼女の強みだ」と一郎が頷く。</p>
+
+        <p>彼ら三人、異なる個性を持つ忍びたちだが互いを信頼していた。その絆は深まっていく。</p>
+        <p>木々に囲まれた山小屋の中、空気が静かだった。風見草の髪には小さな汗粒が光っていた。彼女の目に映るものは仲間たちへの信頼と決意だけ。</p>
+
+        <p>日暮れと共に彼らの作戦会議は終わりを告げた。</p>
+        <p>「始めるぞ」</p>
+        <p>薫の一言に、全員が息を一つに合わせていた。</p>
+        <p>山小屋から外へ出ていく足音。夜闇の中、忍びたちの新たな旅が始まる。</p>
+
+        <p>月明かりの中で彼らは静かに動いた。「風見草、準備万端だな？」</p>
+        <p>「ああ」手で頷く彼女の視線は遠くを向いていた。</p>
+        <p>山肌から吹き抜ける冷たい風。それは忍びたちの呼吸と共鳴していた。</p>
+
+        <p>薫と一郎が風見草に寄り添うように立つ。「私たちも、いつでも動きだす」</p>
+        <p>「了解しました」</p>
+
+        <p>月光に照らされた彼ら三人は息を合わせていた。</p>
+        <p>山中の静けさと共に夜が深まった。忍びたちの絆は闇の中で明るく輝いていた。</p>
+
+        <p>風見草たちは山道を進む。「私たち、いつだって一緒だよ」一郎の言葉には安心感があった。</p>
+        <p>薫も黙って歩み続け、「それが君らしさだな」</p>
+
+        <p>彼ら三人。互いに背中を預けながら進んでいく。</p>
+        <p>月明かりの中、彼らは忍びとしての道程を刻む。</p>
+
+        <p>山中の薄暗さと月光が二人の影を作り出していた。「俺たちはいつだって風見草を信じてる」薫の一言だった。</p>
+        <p>「あなたたちもまた私にとって欠かせない仲間です」</p>
+
+        <p>夜更け、彼らは新たな任務に向けて闇へと消えていった。山肌から吹き抜ける冷たい風が木々に絡みつくように。</p>
+
+        <p>月明かりの中、忍びの絆は深まっていく。</p>
+        <p>風見草たち三人。互いを信頼し合うその光景は、深夜の静けさの中でいつまでも残るだろう。</p>
+
+        <p>彼らの足音だけが闇夜の中に響いていた。</p>
+        <p>山肌に灯りがないような深い黒と月明かりの白が混ざって作り出す影。</p>
+        <p>それが忍びたちの新たな旅路を照らしていた。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-4">
+      <div class="chapter-header">
+        <span class="chapter-number">第4章</span>
+        <h2 class="chapter-title">裏切り者の影</h2>
+      </div>
+      
+      <div class="chapter-body">
+        <p>第4章　裏切り者の影</p>
+
+        <p>月光が冷たく、薄氷のような地面に静かに流れている。風が頰を撫で、木々の葉が微かな音色を奏でる夜だった。空気は澄んでおり、星々が遠くから覗いているようである。薫と風見草は影のように闇の中へ消えていった。</p>
+
+        <p>「俺たちは裏切り者の手がかりを見つけなければならん」</p>
+        <p>薫の低い声が、静寂をかき乱す。</p>
+        <p>風見草は何も言わずに黙って頷くだけだった。彼女の中で疑問と不安は渦巻いている。しかし表情には映さない。</p>
+
+        <p>冷たい石畳に足音が響く。「裏切り者の正体」、それを探し求めて二人の忍びは深夜を彷徨う。</p>
+        <p>「君らしくはないな」と薫、「風見草」その名前すらも影のように薄い彼女だが、今日だけは何となく重苦しい。</p>
+
+        <p>月明かりが街路に落ちている。石畳には細かな音が刻まれ、遠くの犬が低く唸っている。「信じる」という言葉を薫は繰り返し風見草へ向ける。</p>
+        <p>「俺たちは同じ命綱だ」</p>
+        <p>そして二人の影だけが、闇の中で揺らめきながら進む。</p>
+
+        <p>突然、風見草の足が止まる。視線が前方に釘付けになった。「何か？」薫も息を潜めて周囲を見回す。</p>
+        <p>冷たい石畳と月光の中で気配を感じる。そして二人はそれを追跡する。</p>
+        <p>「忍び」という言葉は、時には裏切り者でもある。</p>
+
+        <p>薄暗い小道で風見草が立ち止まり、「何か見たか？」薫の問いに彼女は何も答えず視線を遠くへ向けている。「信じてください」</p>
+
+        <p>月明かりの中、彼らの足音だけが響いていた。</p>
+        <p>「手紙だ」</p>
+        <p>それが裏切り者の痕跡かもしれない。風見草はそれを握りしめるようにして包み込む。</p>
+
+        <p>冷たい石畳に身を沈め、風見草と薫は静かにその内容を読み解く。「信じて」という言葉が再び二人の間で繰返される。</p>
+        <p>月明かりの中で彼らの影だけが揺らめきながら進み続ける。</p>
+
+        <p>「俺たちは同じ命綱だ」</p>
+        <p>風見草は何も答えず、ただ月光に包まれる自分の影を見つめる。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-5">
+      <div class="chapter-header">
+        <span class="chapter-number">第5章</span>
+        <h2 class="chapter-title">秘密の伝説</h2>
+      </div>
+      
+      <div class="chapter-body">
+        <p>第5章　秘密の伝説</p>
+
+        <p>薄い霧が朝日と共に広がる森。草木から水滴したたる音、遠くで鳥たちの囁き。風見草は深呼吸すると喉に冷たい空気が通り抜けていく。</p>
+
+        <p>「ここだよ」</p>
+
+        <p>薫の声と同時に、一本の古い石柱が視界に入る。</p>
+        <p>その表面には傷ついた文字が刻まれている。</p>
+
+        <p>「伝説を語る者がいるはずさ」</p>
+        <p>風見草は頷きながら周囲を見回す。小さな祠があった。参拝者の供え物に古びた紙片の束があることに気づく。</p>
+
+        <p>それらの一つを取り上げ、手で軽く撫でてみる。</p>
+        <p>「これは古いだ」</p>
+
+        <p>「忍者たちが伝説を口承文化として引き継いできたものさ」</p>
+        <p>薫は祠から離れて少し下った場所に立つと、その周囲の草木を手早く切り払う。</p>
+
+        <p>風見草も石柱の周りを調べる。何枚かの紙片が透けて見える。</p>
+        <p>一枚を慎重に取り出して展開する。「千年前」という単語があらわれる。</p>
+
+        <p>「これを見ろ」</p>
+        <p>薫は古い祠からもう一つ、小さな封筒を取り出す。</p>
+        <p>中に含まれていたのは破れた地図と短い手紙だった。その内容は興奮と驚きで頬を引き締める。「秘密の伝説」という言葉が躍る。</p>
+
+        <p>「ここに確かにあったな」</p>
+        <p>風見草は呟くように言う。</p>
+        <p>彼女たちの忍び組織には、かつて存在したという古代の秘宝があると言われていた。しかし詳細は誰も知らない謎だった。</p>
+
+        <p>「手紙を見るんだよ」</p>
+
+        <p>封筒から出てきた手紙を広げる。</p>
+        <p>そこには伝説が現代と繋がる驚愕の一節が刻まれている。「古い祠の中に秘密が隠されている」</p>
+        <p>一瞬、彼女たちの間で静寂が訪れる。</p>
+
+        <p>「どこかに目印があるはずだ」</p>
+
+        <p>薫は周囲を見渡す。</p>
+        <p>風見草もまた小さな石を手にとってその形と色合いを注意深く観察する。視線だけで何か伝え合うように、二人同時に祠の裏側へ移動した。</p>
+
+        <p>そこには刻まれたマークがあった。</p>
+        <p>「これが正しい」</p>
+        <p>薫が確認すると彼女は頷いた。「ここから始めるんだ」</p>
+
+        <p>祠の中を見ると石像に覆われていた小さな穴がある。中身を覗き込むと、古い巻物が一つだけ納められていた。</p>
+
+        <p>風見草はそれを丁寧に手にとって、慎重に開く。</p>
+        <p>そこには古代の文字で書かれた謎多き伝説があった。「秘密の宝」という言葉が躍る。その存在自体も信じ難いほど不思議なものだった。</p>
+
+        <p>「これが我々を導いていく」</p>
+        <p>風見草は呟いた。静寂の中で、祠から漏れる微かな光。</p>
+        <p>二人は何処までも深い闇に身を置きながら、新たな冒険の始まりを感じる。</p>
+
+        <p>古い紙片が彼女たちの指先でそっと揺れている。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-6">
+      <div class="chapter-header">
+        <span class="chapter-number">第6章</span>
+        <h2 class="chapter-title">忍びの道の真髄</h2>
+      </div>
+      
+      <div class="chapter-body">
+        <p>第6章　忍びの道の真髄</p>
+
+        <p>朝露に濡れた竹藪。静かな森の中で、日光が地面を照らす角度が少しずつ変化していた。風見草は深い息を吐きながら、薫から教わった新技を練習する。</p>
+
+        <p>「足音聞こえないか？」</p>
+
+        <p>石畳の上をそっと滑るように進み、彼女は自分の動きに集中した。</p>
+        <p>背後で木が軋む音。風見草は一瞬振り返るも、誰もない。</p>
+        <p>薫の声が響いた。「もっと自然と調和せよ」</p>
+        <p>風見草は目を閉じた。土の匂い、生気の息遣いを感じ取る。</p>
+
+        <p>「何を見つめる？」</p>
+
+        <p>開かれた目に新たな光があるように思えた。</p>
+        <p>彼女は静かに答える。「何も見えない、ただ感じている」</p>
+        <p>薫が頷く音。竹藪の中で聞こえてくるのは僅かな動きだけだった。</p>
+
+        <p>風見草の指先から伝わる力強さ。刃を握りしめる感覚。新しく習得した忍具の一つ。</p>
+        <p>「これで、隠れた敵を見抜ける」</p>
+
+        <p>薫が遠くへと向かう。彼女は静寂の中で呼吸に耳を傾けた。</p>
+
+        <p>「ただ今から始まるのは訓練ではなく、試練だよ」</p>
+        <p>風見草は深呼吸。「覚悟できているか？」</p>
+
+        <p>答えは言葉にならなかった。</p>
+        <p>竹の根元で小石が転がる音。彼女たちの足跡が消えるように地面に刻まれていく。</p>
+
+        <p>夜明け前の闇を進む二人の忍び。風見草は新たな力を試すため、薫からの課題を受け取った。「敵と戦う前に何を見つけるか」</p>
+        <p>答えを探し求める者たちは、静寂の中で自分の心に耳を澄ませる。</p>
+        <p>遠くで聞こえる鳥の声が夜更けを告げる。</p>
+
+        <p>風見草は深く息を吸い込んだ。闇の中から視線を感じ、刃を握り直す。小さな石が転がった音。「始めるよ」</p>
+
+        <p>彼女たちは静かに動き出した。</p>
+        <p>新たな道程が始まったように感じられた。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-7">
+      <div class="chapter-header">
+        <span class="chapter-number">第7章</span>
+        <h2 class="chapter-title">光と影の間で</h2>
+      </div>
+      
+      <div class="chapter-body">
+        <p>第7章　光と影の間で</p>
+
+        <p>月明かりが薄暗い森に差し込む。湿った草木から漂う露の匂い、遠くで聞こえる夜鳥の鳴き声。風見草は身じろぎ一つせず静寂を保つ。</p>
+
+        <p>「もう少し耐えられるか？」</p>
+        <p>薫の問いかけには答えず、彼は何度も深呼吸する。</p>
+        <p>樹齢百年を超す老木が月光に浮かび上がり、その影が揺らめく。微風が吹き荒れる。小さな葉っぱが地面を撫でるように軋む音。</p>
+
+        <p>風見草は静かな森の中を見渡し、視線だけで四方八方を探る。</p>
+        <p>「何かを感じ取れ」</p>
+        <p>薫の言葉に従い、彼は何一つ声に出さずに考え続ける。</p>
+        <p>不意に足元から土が微かにつき上がり、その動きを察知する。頭上からの陰気な息吹が背筋を冷たく走り抜ける。</p>
+
+        <p>「動くな」</p>
+        <p>風見草は全身の力を制御し、体感温度と心拍数を観測。</p>
+        <p>隠された敵への懸念が増す一方で、自身の忠誠心と信念に対する疑問も湧き上がってくる。  </p>
+        <p>視界に映る木々が揺れるように見え、風見草は緊張しながら呼吸をする。</p>
+
+        <p>「君ならできる」</p>
+        <p>薫の声を聞き、彼は何度もうなずく。</p>
+        <p>しかし目の前に立ちはだかる迷いと葛藤には、素早さと鋭敏さ以上の何かが必要だと感じる。  </p>
+        <p>月光が木々間から漏れ出し、まるで自分が闇に浮かんでいるように錯覚する。</p>
+
+        <p>「それが忍び」</p>
+        <p>風見草は呟きながら目を細める。</p>
+        <p>影の中で動くものを探し出すために、自身の感情と向き合い続けている。  </p>
+        <p>樹齢百年を超す老木の根元から静かな息遣いが聞こえてくる。</p>
+
+        <p>月明かりに照らされた森全体があたかも一幅の絵のように浮かび上がり、風見草は自分が描かれている一員であることを再認識する。</p>
+        <p>「忍びとは何か」</p>
+        <p>彼は何度も自身を問い詰め続ける。  </p>
+        <p>闇の中で蠢く敵を探すために、また人間として生きるためには何が必要なのか。</p>
+
+        <p>老木の影が揺らぐ音と共に風見草は動き始める。</p>
+        <p>月光に照らされた森全体が静かに息づき、彼は何一つ言葉を発さずに闇へと消えていく。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-8">
+      <div class="chapter-header">
+        <span class="chapter-number">第8章</span>
+        <h2 class="chapter-title">反逆者との対決</h2>
+      </div>
+      
+      <div class="chapter-body">
+        <p>第8章　反逆者との対決</p>
+
+        <p>雪が地面に静かに積もる夜、暗闇と白い光の狭間で風見草は息を潜めた。月光が木々の枝葉に触れて反射し、星屑のように舞う雪粒を見つめている。冷たい空気が鼻腔を刺激する。</p>
+        <p>「君達には理解できないだろう」</p>
+        <p>声がした。背後から忍び足で近づく男の姿があった。</p>
+
+        <p>竜崎薫は風見草に手振りで合図し、息子である彼と並んで裏切り者たちとの戦いを始める。</p>
+        <p>「なぜ？」と風見草は静かに尋ねる。</p>
+        <p>「忍びとは闇の中で生きるものだ」男が答える。「忠誠心など、無意味な感情」</p>
+
+        <p>雪の下で潜む根っこが肌を感じるように絡みつき、冷たい地面から伝わる震え。手裡剣が鋭い音を立てて飛び交う。</p>
+        <p>「なぜ人間らしい？」と風見草は再び問いかけた。</p>
+
+        <p>男の目には虚ろな光がある。「忠誠心など役立つものではない」と言い、短刀を抜く。</p>
+
+        <p>闇に紛れる影たち。その中で風見草は息苦しさを感じながらも前進する。</p>
+        <p>「忍ぶ者であることは誇りだ」薫が言った。「ただ黙っていなければならないわけじゃない」</p>
+
+        <p>木々の間に散乱した手裡剣を避け、雪原を行く足音。男と間合いを取りつつ睨み合う二人。</p>
+
+        <p>風見草は自分の心に問いかける。</p>
+        <p>「自分たちは本当に戦っているのか？　この闇の中で正義とは何か？」</p>
+        <p>その答えを見つけられないまま、彼の視線が対峙する敵へ向けられる。</p>
+
+        <p>影の中から男が現れ、短刀を握る。「終わりだ」と言い放つ。しかし風見草は動じない。</p>
+        <p>「忠誠心と信念、それが忍びにとって最も重要な道徳性なのだろう？」</p>
+        <p>雪粒が月光に照らされて白銀の砂時計のように舞う。</p>
+
+        <p>男は無言で短刀を突き出し、二人は静かに対峙する。両者の間には冷たい空気だけが流れている。</p>
+        <p>「答えを見つけられるまで戦い続けるよ」と風見草は言った。「それが忍びとしての道だ」</p>
+
+        <p>闇と雪に包まれた森の中で、男と風見草は向き合い続け──</p>
+
+        <p>月光が木々を照らし、星屑のような雪粒が舞う。静寂の中、遠くで誰かの呼吸だけが聞こえる。</p>
+
+        <p>白銀の地平線へ続く道筋。</p>
+        <p>その先にはどのような答えがあるのか？</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-9">
+      <div class="chapter-header">
+        <span class="chapter-number">第9章</span>
+        <h2 class="chapter-title">新たな世界への扉</h2>
+      </div>
+      
+      <div class="chapter-body">
+        <p>第9章　新たな世界への扉</p>
+
+        <p>夜が深まり、月の光だけが闇に浮かび上がる。風見草は一人、裏切り者たちとの戦い後もその場で立ち尽くす。身近な音がない静けさの中で、遠くから聞こえるのは木々を揺らす微かな風と、夜露の滴る音だけだ。</p>
+
+        <p>肌寒さが頬に触れる。彼は深呼吸をする。肺いっぱいに吸い込んだ空気には土埃と草花の香りが混ざっていた。不意に瞼が痛むように光った何かを見た気がする。</p>
+
+        <p>「風見草、来るか？」</p>
+
+        <p>後ろから聞こえた竜崎薫の声は静けさを切り裂く鋭い刃のように響いた。</p>
+
+        <p>彼振り返るとそこには黒髪を肩まで伸ばし目を細めた薫が立っていた。影に隠れるように佇むその姿は、闇から現れたかのような不気味な美しさがあった。「来よう」と風見草は静かに呟き返す。</p>
+
+        <p>二人で歩みを進める。月光と闇の間を行く細い道が、彼らの足下にはっきりと浮かび上がる。その先にあるのは未知なる世界への入口かもしれない。</p>
+
+        <p>「あの男たちの裏切りは、組織自体が腐り果てている証拠だ」</p>
+
+        <p>薫の言葉に風見草は止まる。「本当にそうだと思えるのか？」静寂の中での問いかけには鋭さがあった。彼女は頷かずもふるわず。</p>
+
+        <p>「答えを見つけるまで、戦い続けるよ」彼女の口調からは揺らぐことのない意志が伝わってくる。風見草の心に一筋の光が差し込んだような瞬間だった。「良い」と薫は僅かに微笑んだように思えた。</p>
+
+        <p>そして二人共、新たな道へと進んでいった。</p>
+
+        <p>月明かりで浮き彫りになった木々の影が揺れ動き、夜露を掻き集めて風の中を漂う。彼らを見守るかのように静寂が響く中、小さな音だけが聞こえる。「さあ」と薫は言った。そして二人共新たな扉を開けようとしていた。</p>
+
+        <p>月光に浮かび上がる道の端には無数の足跡があった。それは忍びたちの長い旅路を物語っていた。</p>
+
+        <p>その先にあるものはまだ誰にもわからない。しかし風見草と竜崎薫、彼らは今こそ新しい世界へ向けて一歩踏み出そうとしていたのである。</p>
+
+        <p>静寂が深い闇に浮かぶ二人の影を見つめているように感じられた。「進め」と彼女から聞こえた言葉を最後に、風見草と竜崎薫の新たな旅が始まった。月光の中、彼らは未知なる道へと進んでいった。</p>
+
+        <p>その先にあるものはまだ誰にもわからない。しかし二人が手を取り合って歩み始めたことは確かなことだった。</p>
+
+        <p>光の中に影、そして闇の中で光り輝く世界へと一歩ずつ近づいていく二人の姿に、風だけが静かに視線を送る。</p>
+        <p>月明かりで浮き彫りになった木々の影が揺れ動き、夜露を掻き集めて風の中を漂う。それは彼らを見守るように存在していた。</p>
+
+        <p>そして先へと進む足音は道端から聞こえる遠くまで届いていく。「進め」と彼女からの言葉だけが耳に心地よく響いたのであった。</p>
+        <p>月光が夜の闇を切り裂き、二人の影だけで浮かび上がる世界があった。静寂の中でただその先へと進んでいった。</p>
+
+        <p>風見草は深呼吸をして歩み続けた。「答えを見つけるまで」と彼女は呟くように言った。それは決意であり希望でもあった。</p>
+        <p>それから月光が闇を切り裂き、二人の影だけ浮かび上がる道の端には無数の足跡があった。</p>
+
+        <p>その先にあるものはまだ誰にもわからない。しかし風見草と竜崎薫は新たな旅路に進み続けていたのである。月明かりの中、彼らは未知なる世界へ一歩ずつ近づいていった。</p>
+        <p>月光が揺らめきながら夜の闇を照らし出す中、二人の影だけ浮かび上がる道端には無数の足跡があった。</p>
+
+        <p>その先にあるものは誰にもわからない。しかし風見草と竜崎薫は新たな旅路に進み続けていたのである。</p>
+        <p>月光が揺曳する夜の闇の中で、彼らを見守るかのように静寂だけが響き渡っていた。</p>
+      </div>
+    </section>
+    <section class="chapter" id="chapter-10">
+      <div class="chapter-header">
+        <span class="chapter-number">第10章</span>
+        <h2 class="chapter-title">未来への希望</h2>
+      </div>
+      
+      <div class="chapter-body">
+        <p>第10章　未来への希望</p>
+
+        <p>夕陽が谷間の雪原に血のように染みる。風見草と竜崎薫、そしてその他の仲間たちと共に山裾で休憩する一行は、遠くへ続く道を眺めている。</p>
+
+        <p>「この光、冬も春になる季節だな」</p>
+
+        <p>風見草が言う。「そうね」と答え、薫の視線が彼に向かう。二人とも口元に薄い笑みを浮かべたまま、それぞれ自分たちの手仕事をしながら話し合う。その静けさと穏やかな交流から、互いへの信頼と理解が深く根付いていることが伝わる。</p>
+
+        <p>「先日のこと、風見草君は俺らに何だった？」</p>
+        <p>薫が問いかける。「答えを探した時間でした」と答える。</p>
+        <p>「確かに。でも、それを突き詰めるとさあ……」</p>
+
+        <p>彼女はそこで一度言葉を切り、静かに息を吸う。</p>
+
+        <p>「この組織の根幹さえも揺るがないと信じられないからね。風見草君が目指す道とは違うのか？」</p>
+
+        <p>問いかけに対して風見草はしばし無言で考えていた。</p>
+        <p>その間に谷間には夕闇が忍び寄り、星々の光が始まる。</p>
+
+        <p>「違うよ」と彼は答える。「あなたたちと共にいることで答えを見つけるんだ」</p>
+        <p>薫と他の仲間たちは静かに頷く。冬枯れした木々を背にしてその顔には笑みがあった。</p>
+        <p>風見草が続けて言う、「でも、新しい道も開けるかもしれない」</p>
+
+        <p>彼の言葉は深い意味を持つように聞こえた。「未来への希望」について話す時、彼の目からは温かな光りが見え隠れする。それは新たな旅路を歩む者たち全てに共通することだった。</p>
+
+        <p>「一緒に進もうぜ」と風見草は仲間達へ声をかける。</p>
+        <p>その言葉と共に彼ら皆それぞれに微笑んだ。</p>
+
+        <p>夜露が降る気配を感じながら、一瞬の静寂の中で彼等は未来を見据えた。それぞれ異なる過去を持つ者たちだけれども、今ここでは一つになることができる。そして、互いの手を取り合って共通の目標に向かう旅路が始まるのである。</p>
+        <p>山裾から吹き抜ける風が彼らを包む。</p>
+
+        <p>青白く光る星々は静寂の中でも微かな音を奏でるように聞こえる。それは新たな希望と約束であり、忍びたちの心に灯りをともす。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>忍者の陰に潜む光と影</p>
+    <p>Generated locally with Ollama + Stable Diffusion</p>
+  </footer>
+
+
+  <button class="tts-fab" id="ttsFab" onclick="ttsToggle()" title="Read aloud">
+    <span id="ttsFabIcon">&#x1f50a;</span>
+  </button>
+  <div class="tts-bar" id="ttsBar">
+    <button onclick="ttsPause()" id="ttsPauseBtn">&#x23f8;</button>
+    <button onclick="ttsStop()">&#x23f9;</button>
+    <button onclick="ttsPrev()">&#x23ee;</button>
+    <button onclick="ttsNext()">&#x23ed;</button>
+    <span class="tts-info" id="ttsInfo">Ready</span>
+    <span class="tts-speed">
+      <input type="range" id="ttsSpeed" min="0.5" max="2.0" step="0.1"
+             value="1.0" onchange="ttsSetSpeed(this.value)" />
+      <span id="ttsSpeedVal">1.0x</span>
+    </span>
+  </div>
+
+  <button class="mode-toggle" onclick="toggleMode()">🌗 表示切替</button>
+
+  <script>
+    // Reading mode
+    function toggleMode() {
+      document.body.classList.toggle('light');
+      localStorage.setItem('mode', document.body.classList.contains('light') ? 'light' : 'dark');
+    }
+    if (localStorage.getItem('mode') === 'light') document.body.classList.add('light');
+
+    // Scroll progress
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+      document.getElementById('progress').style.width = pct + '%';
+    });
+
+    // === TTS (Web Speech API) ===
+    const synth = window.speechSynthesis;
+    let ttsChs = [], ttsI = 0, ttsRate = 1.0, ttsOn = false, ttsPd = false;
+
+    document.querySelectorAll('.chapter').forEach((sec, i) => {
+      const b = sec.querySelector('.chapter-body');
+      const t = sec.querySelector('.chapter-title');
+      if (b) ttsChs.push({
+        title: t ? t.textContent : ('Ch.' + (i+1)),
+        text: b.textContent.trim(), el: sec
+      });
+    });
+
+    function ttsToggle() {
+      if (!synth) { alert('Speech not supported'); return; }
+      if (ttsOn) { ttsStop(); return; }
+      const sy = window.scrollY + window.innerHeight / 3;
+      let cl = 0;
+      ttsChs.forEach((c, i) => { if (c.el.offsetTop <= sy) cl = i; });
+      ttsI = cl; ttsOn = true; ttsPd = false;
+      document.getElementById('ttsFab').classList.add('speaking');
+      document.getElementById('ttsFabIcon').innerHTML = '&#x23f9;';
+      document.getElementById('ttsBar').classList.add('active');
+      _ttsRead();
+    }
+
+    function _ttsRead() {
+      if (ttsI >= ttsChs.length) { ttsStop(); return; }
+      synth.cancel();
+      const ch = ttsChs[ttsI];
+      document.getElementById('ttsInfo').textContent = ch.title;
+      ch.el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // Split by Japanese sentence endings for reliable playback
+      const sents = ch.text.match(/[^。！？
+]+[。！？]?/g) || [ch.text];
+      let si = 0;
+
+      function next() {
+        if (!ttsOn) return;
+        if (si >= sents.length) {
+          ttsI++;
+          if (ttsI < ttsChs.length) setTimeout(_ttsRead, 800);
+          else ttsStop();
+          return;
+        }
+        const u = new SpeechSynthesisUtterance(sents[si].trim());
+        u.lang = 'ja-JP'; u.rate = ttsRate;
+        const vs = synth.getVoices();
+        const jv = vs.find(v => v.lang && v.lang.startsWith('ja'));
+        if (jv) u.voice = jv;
+        u.onend = () => { si++; next(); };
+        u.onerror = () => { si++; next(); };
+        synth.speak(u);
+      }
+      next();
+    }
+
+    function ttsPause() {
+      if (!ttsOn) return;
+      if (ttsPd) {
+        synth.resume(); ttsPd = false;
+        document.getElementById('ttsPauseBtn').innerHTML = '&#x23f8;';
+      } else {
+        synth.pause(); ttsPd = true;
+        document.getElementById('ttsPauseBtn').innerHTML = '&#x25b6;';
+      }
+    }
+
+    function ttsStop() {
+      synth.cancel(); ttsOn = false; ttsPd = false;
+      document.getElementById('ttsFab').classList.remove('speaking');
+      document.getElementById('ttsFabIcon').innerHTML = '&#x1f50a;';
+      document.getElementById('ttsBar').classList.remove('active');
+      document.getElementById('ttsInfo').textContent = 'Ready';
+      document.getElementById('ttsPauseBtn').innerHTML = '&#x23f8;';
+    }
+
+    function ttsNext() { if (ttsOn && ttsI < ttsChs.length - 1) { ttsI++; _ttsRead(); } }
+    function ttsPrev() { if (ttsOn && ttsI > 0) { ttsI--; _ttsRead(); } }
+    function ttsSetSpeed(v) {
+      ttsRate = parseFloat(v);
+      document.getElementById('ttsSpeedVal').textContent = v + 'x';
+    }
+    if (synth) synth.onvoiceschanged = () => synth.getVoices();
+
+    /* ─── Carousel ─── */
+    (function() {
+      const track = document.getElementById('carouselTrack');
+      if (!track) return;
+      const dots = track.parentElement.querySelectorAll('.carousel-dot');
+      const slides = track.querySelectorAll('.carousel-slide');
+      if (slides.length < 1) return;
+      function updateDots() {
+        const sw = slides[0].offsetWidth + 14;
+        const idx = Math.round(track.scrollLeft / sw);
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+      track.addEventListener('scroll', updateDots, { passive: true });
+      dots.forEach(d => d.addEventListener('click', () => {
+        const sw = slides[0].offsetWidth + 14;
+        track.scrollTo({ left: parseInt(d.dataset.idx) * sw, behavior: 'smooth' });
+      }));
+      let paused = false, timer = setInterval(() => {
+        if (paused) return;
+        const sw = slides[0].offsetWidth + 14;
+        const mx = track.scrollWidth - track.clientWidth;
+        const nx = track.scrollLeft + sw;
+        track.scrollTo({ left: nx > mx ? 0 : nx, behavior: 'smooth' });
+      }, 4000);
+      track.addEventListener('touchstart', () => { paused = true; clearInterval(timer); }, { passive: true });
+      track.addEventListener('touchend', () => {
+        paused = false;
+        timer = setInterval(() => {
+          if (paused) return;
+          const sw = slides[0].offsetWidth + 14;
+          const mx = track.scrollWidth - track.clientWidth;
+          const nx = track.scrollLeft + sw;
+          track.scrollTo({ left: nx > mx ? 0 : nx, behavior: 'smooth' });
+        }, 4000);
+      }, { passive: true });
+    })();
+
+  </script>
+</body>
+</html>
